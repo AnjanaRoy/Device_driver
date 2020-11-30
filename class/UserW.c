@@ -6,7 +6,7 @@
 int main()
 {
     int fd,rt;
-    char buffW[SIZE];
+    char buffW[]= "fromuser";
     fd=open("/dev/Sample0",O_RDWR);
     if(fd<0)
     {
@@ -14,10 +14,9 @@ int main()
         return fd;
     }
 
-    rt=read(fd, buffR, SIZE);
+    rt = write(fd, buffW, sizeof(buffW));
 
-    printf("read bytes form kernel is :%d\n",rt);
+    printf("write bytes form kernel is :%d\n",rt);
 
-    close(fd);
     return 0;
 }
