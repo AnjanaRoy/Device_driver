@@ -6,7 +6,7 @@
 int main()
 {
     int fd,rt;
-    char buffW[SIZE];
+    char buffR[SIZE];
     fd=open("/dev/Sample0",O_RDWR);
     if(fd<0)
     {

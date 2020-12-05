@@ -26,9 +26,10 @@ static int Sample_close(struct inode *inodep,struct file *filep)
 }
 static ssize_t Sample_read (struct file *fp, char __user *Ubuff, size_t count, loff_t *offset)
 {
-    int i,ret;
+    int i,ret, mini;
+    mini = min(count, (size_t)CIRC_CNT(cbuf.head, cbuf.tail, SIZE));
     printk("\nsize recive from user to read : %d",(int)count);
-    for(i=0; i<count; i++)
+    for(i=0; i<mini; i++)
     {
         ret = copy_to_user(Ubuff+i, cbuf.buf + cbuf.tail,1);
         if(ret)
@@ -45,9 +46,10 @@ static ssize_t Sample_read (struct file *fp, char __user *Ubuff, size_t count, l
 
 static ssize_t Sample_write (struct file *fp, const char __user *Ubuff, size_t count, loff_t *offset)
 {
-    int ret,i;
+    int ret,i,mini;
+    mini = min(count, (size_t)CIRC_CNT(cbuf.head, cbuf.tail, COUNT));
     printk("\nsize sent from user : %d", (int)count);
-    for(i=0; i<count; i++)
+    for(i=0; i<mini; i++)
     {
         ret = copy_from_user(cbuf.buf + cbuf.head, Ubuff+i,1);
         if(ret)
